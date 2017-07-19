@@ -1,0 +1,30 @@
+AddDefaultCharset UTF-8
+AddCharset UTF-8 .js
+DirectoryIndex index.php
+
+<Files *.ini>
+    order allow,deny
+    deny from all
+</Files>
+
+RewriteRule (.*) index.php [QSA,L]
+RewriteRule (.+) index.php [QSA]
+
+Redirect 404 "/includes"
+
+# BOT EXCLUSION
+SetEnvIfNoCase User-Agent "www.80legs.com" bad_bot
+SetEnvIfNoCase User-Agent "^spider" bad_bot
+
+<Limit GET POST>
+    Order Allow,Deny
+    Allow from all
+    Deny from env=bad_bot
+</Limit>
+
+<IfModule mod_expires.c>
+ExpiresActive On
+<FilesMatch "(([a-zA-Z0-9]+\.css)|([a-zA-Z0-9]+\.js))$">
+ ExpiresDefault "access plus 1 year"
+</FilesMatch>
+</IfModule>

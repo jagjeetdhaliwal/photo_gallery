@@ -1,0 +1,12 @@
+#ignore temporary files
+.idea
+*.swp
+*.swo
+*.swn
+.DS_Store
+._.DS_Store
+._*
+
+application.iml
+.watchmanconfig
+

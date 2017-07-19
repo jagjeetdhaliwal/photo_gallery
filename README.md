@@ -16,7 +16,15 @@
 
 # Demo
 
-Available at http://www.hipstermidtown.com/
+Available at http://www.hipstermidtown.com/ 
+
+The client is still running in Sandbox Mode. For Instagram Sandbox invitation, please drop an email to jagjeetdhaliwal[AT]gmail[DOT]com.
+
+A couple screenshots.
+
+https://gyazo.com/5e4c4663a5c099851ca1c2783464c777
+https://gyazo.com/2f3d55ba579d76d3f13ea3f07e12935a
+
 
 # Notes
 
@@ -31,7 +39,7 @@ Available at http://www.hipstermidtown.com/
 # TO DO
 
 1. Protecting Session Data using session_set_save_handler() and storing in a database/memcache or both.
-2. Use masonry for better gridding.
+2. Use masonry or customise further for better gridding.
 3. Randomize fallback images to give a better experience to logged out users.
 4. 
 

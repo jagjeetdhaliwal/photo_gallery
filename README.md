@@ -18,7 +18,7 @@
 
 Available at http://www.hipstermidtown.com/ 
 
-The client is still running in Sandbox Mode. For Instagram Sandbox invitation, please drop an email to jagjeetdhaliwal[AT]gmail[DOT]com.
+The client is still running in Sandbox Mode and therefore only allows to fetch a maximum of 20 photos at the moment. To be able to login, please drop an email to jagjeetdhaliwal[AT]gmail[DOT]com to get a Sandbox invitation for the client.
 
 A couple screenshots.
 

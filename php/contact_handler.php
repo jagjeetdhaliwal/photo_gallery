@@ -4,17 +4,18 @@ include_once '../includes/application_top.php';
 
 $output = array();
 
+// Validate CSRF token
 if (!isSet($_SESSION['csrf_token']) || empty($_SESSION['csrf_token'])
     || empty($_POST['csrf_token']) || !isSet($_POST['csrf_token'])
     || ($_SESSION['csrf_token'] != $_POST['csrf_token']) ) {
     $output['error'] = "Something went wrong, go back and try again!";
-} else if (!isset($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+} else if (!isset($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) { //Validate email
     $output['source'] = 'email';
     $output['error'] = "Please enter a valid email ID, so we that can get in touch with you.";
-} else if (!isset($_POST['message']) || $_POST['message'] == "") {
+} else if (!isset($_POST['message']) || $_POST['message'] == "") { //Validate message
     $output['source'] = 'message';
     $output['error'] = "Please specify your message so that we can serve you better.";
-} else if (!isset($_POST['first_name']) || $_POST['first_name'] == "") {
+} else if (!isset($_POST['first_name']) || $_POST['first_name'] == "") { //Validate first name
     $output['source'] = 'first_name';
     $output['error'] = "Please tell us your name.";
 } else {
@@ -35,6 +36,7 @@ if (!isSet($_SESSION['csrf_token']) || empty($_SESSION['csrf_token'])
     $body = "From: $name </br> E-Mail: $email </br> Message: $message";
 
 
+    // Send email using mailgun
     if (sendMail($to, $subject, $body, 'support@'.$_settings['mailgun']['domain'])) {
         $output['success'] = true;
         $output['message'] = 'Your message has been sent. We will be in touch soon!';
@@ -46,8 +48,8 @@ if (!isSet($_SESSION['csrf_token']) || empty($_SESSION['csrf_token'])
             'message' => $message
         );
 
-        sendRecordToAirtable($data);
-        logToDatabase($data);
+        sendRecordToAirtable($data); // Add Record to Airtable
+        logToDatabase($data); // Log to Database
     } else {
         $output['message'] = "Something went wrong, go back and try again!";
     }
@@ -55,9 +57,11 @@ if (!isSet($_SESSION['csrf_token']) || empty($_SESSION['csrf_token'])
 
 returnJSON($output);
 
+// Send mail using mailgun
 function sendMail($to, $subject, $message, $from) {
     global $_settings;
 
+    // Check if mailgun settings are set.
     if (!isset($_settings['mailgun']['key']) || !$_settings['mailgun']['domain']) {
         return false;
     }
@@ -93,6 +97,7 @@ function sendMail($to, $subject, $message, $from) {
     return $j;
 }
 
+// Send our record to Airtable using Curl
 function sendRecordToAirtable($data) {
     global $_settings;
 
@@ -132,6 +137,7 @@ function sendRecordToAirtable($data) {
     return $j;
 }
 
+// Insert query into MySQL database
 function logToDatabase($data) {
     global $DB;
 
@@ -147,7 +153,6 @@ function logToDatabase($data) {
         $affected = true;
     }
 
-    /* close statement*/
     $stmt->close();
 
     return $affected;

@@ -10,17 +10,19 @@ if ($code) {
   // Receive OAuth token object
   $data = $instagram->getOAuthToken($code);
 
-  // Take a look at the API response
+  // Take a look at the API response. IF no username, redirect to index.php
   if (empty($data->user->username)) {
     header('Location: index.php');
   } else {
     	$_SESSION['userdetails'] = $data;
-    	$username = $data->user->username;
-    	$fullname = isset($data->user->full_name) ? $data->user->full_name : "";
-    	$bio = isset($data->user->bio) ? $data->user->bio : "";
-    	$website = isset($data->user->website) ? $data->user->website : "";
+
+      // Sanitise values before adding to database.
+    	$username = filter_var(trim($data->user->username), FILTER_SANITIZE_STRING);
+    	$fullname = isset($data->user->full_name) ? filter_var(trim($data->user->full_name), FILTER_SANITIZE_STRING) : "";
+    	$bio = isset($data->user->bio) ? filter_var(trim($data->user->bio), FILTER_SANITIZE_STRING) : "";
+    	$website = isset($data->user->website) ? filter_var(trim($data->user->website), FILTER_SANITIZE_STRING) : "";
     	$id = intval($data->user->id);
-    	$token = $data->access_token;
+    	$token = filter_var(trim($data->access_token), FILTER_SANITIZE_STRING);
 
       $instagram_id = 0;
       $query = "SELECT `instagram_id`
@@ -34,7 +36,7 @@ if ($code) {
       $stmt->fetch();
       $stmt->close();
 
-      //Not able to find an existing user
+      //Add a new user if not able to find an existing user in the database
       if (!$instagram_id) {
           $query = "INSERT INTO `users`(`username`, `name`, `bio`, `website`, `instagram_id`, `instagram_access_token`)
             VALUES (?, ?, ?, ?, ?, ?)";

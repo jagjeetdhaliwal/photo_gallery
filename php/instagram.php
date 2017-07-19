@@ -5,6 +5,7 @@ include_once '../includes/application_top.php';
 $next_max_id = isset($_POST['next_max_id']) ? trim($_POST['next_max_id']) : 0;
 $output = array();
 
+// Validate csrf token
 if (!isSet($_SESSION['csrf_token']) || empty($_SESSION['csrf_token'])
     || empty($_POST['csrf_token']) || !isSet($_POST['csrf_token'])
     || ($_SESSION['csrf_token'] != $_POST['csrf_token']) ) {
@@ -14,7 +15,11 @@ if (!isSet($_SESSION['csrf_token']) || empty($_SESSION['csrf_token'])
 
   $instagram->setAccessToken($data);
 
-  $popular = $instagram->getUserMedia($data->user->id, 6, $next_max_id);
+  // Get next n pictures using next max id
+  $count = isset($_settings['instagram']['count']) ? $_settings['instagram']['count'] : 6;
+  $popular = $instagram->getUserMedia($data->user->id, $count, $next_max_id);
+
+  // Check if we get any more pictures.
   if (isset($popular->data)) {
     $images = array();
     foreach ($popular->data as $data) {

@@ -1,5 +1,6 @@
 $(document).ready(function(){
 
+    // Override append function to handle dynamic dom additions using triggers.
     (function($) {
       var origAppend = $.fn.append;
 
@@ -10,7 +11,8 @@ $(document).ready(function(){
 
     $(".cards-container").bind("append", function() { $('.materialboxed').materialbox();});
 
-    $('#contact_form').on('submit', function(e) { //use on if jQuery 1.7+
+    // Handle contact form submission
+    $('#contact_form').on('submit', function(e) {
         e.preventDefault();  //prevent form from submitting
 
         var form_button = $('#contact_form_submit');
@@ -24,6 +26,7 @@ $(document).ready(function(){
     		var message = $('#message').val().trim();
         var csrf_token = $('#csrf_token').val().trim();
 
+        // Validations
     		if (first_name == '' || first_name == null) {
     			$('#first_name').addClass('invalid');
     			$('#first_name_error').show();
@@ -54,13 +57,14 @@ $(document).ready(function(){
     			delete error['message'];
     		}
 
+        // Submit using ajax if validation is successful
     		if (Object.keys(error).length == 0) {
     			var formData = {
               'first_name' : first_name,
               'last_name' : last_name,
               'email': email,
               'message': message,
-              'csrf_token': csrf_token
+              'csrf_token': csrf_token //for csrf validation
     			};
     	        $.ajax({
     	            type        : 'POST',
@@ -86,12 +90,14 @@ $(document).ready(function(){
     	    		 		$('.form-message').text('Something went wrong, go back and try again!').show().addClass('red');
     	    		 	}
     	            }
-    	        });
-    		}
+             });
+  		}
 
-    		form_button.prop('disabled', false);
-    });
+  		form_button.prop('disabled', false);
+  });
 
+
+  // handle load more button to get more instagram pictures.
   $('#load_more').click(function() {
     var next_max_id = $(this).data('next-max-id');
     var csrf_token = $(this).data('csrf');
@@ -103,7 +109,7 @@ $(document).ready(function(){
       url: '/php/instagram.php',
       data: {
         next_max_id: next_max_id,
-        csrf_token: csrf_token
+        csrf_token: csrf_token //for csrf validation
       },
       dataType: 'json',
       cache: false,
@@ -124,6 +130,7 @@ $(document).ready(function(){
 });
 
 
+// function to get html for every new image card
 function getNewCardHtml(src) {
   var html = '';
   html += '<div class="col s6 l4">';
@@ -136,6 +143,7 @@ function getNewCardHtml(src) {
   return html;
 }
 
+// function to validate email on front end
 function validateEmail(value) {
     filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     return filter.test(value);

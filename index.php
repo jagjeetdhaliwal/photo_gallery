@@ -1,6 +1,7 @@
 <?php include_once 'includes/application_top.php';
 	$loginUrl = $instagram->getLoginUrl();
 
+	//Fallback images
 	$images = array(
 		0 => array('url' => 'https://scontent-sin6-1.cdninstagram.com/t51.2885-15/s640x640/sh0.08/e35/16463967_1287222987988045_2957298103868194816_n.jpg', 'description' => 'The view 😍#eveningrun #fitness #fitnessmotivation #ﬁt #health #running #run #lake #nature #travel #travellife'),
 		1 => array('url' => 'https://scontent-sin6-1.cdninstagram.com/t51.2885-15/s640x640/sh0.08/e35/15803579_732280540262545_5491124810446536704_n.jpg', 'description' => '#sydney #skyline #travel #operahouse'),
@@ -17,8 +18,10 @@
 		// Store user access token
 		$instagram->setAccessToken($data);
 
-		$popular = $instagram->getUserMedia($data->user->id, 6);
+		$count = isset($_settings['instagram']['count']) ? $_settings['instagram']['count'] : 6;
+		$popular = $instagram->getUserMedia($data->user->id, $count);
 
+		// Check if our api call returned any pictures. Otherwise serves fallback images.
 		if (isset($popular->data)) {
 			$images = array();
 			foreach ($popular->data as $data) {

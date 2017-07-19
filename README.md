@@ -1,4 +1,4 @@
-#Photo Gallery
+# Photo Gallery
 
 1. Lets the user login via Instagram
 2. Stores the user info and instagram access tokens in a MySQL database.
@@ -8,17 +8,17 @@
 6. Fallback images shown by default if a user hasn't logged in via Instagram yet.
 
 
-#Contact Form
+# Contact Form
 
 1. MailGun integration for sending notifications to customer support email (configurable in settings)
 2. Airtable integration to save records.
 3. Logs for each submission are stored in a MySQL database.
 
-#Demo
+# Demo
 
 Available at http://www.hipstermidtown.com/
 
-#Notes
+# Notes
 
 1. Materialize has been used for front end purposes.
 2. Strong input validation done at both front end and back end.
@@ -28,7 +28,7 @@ Available at http://www.hipstermidtown.com/
 6. Prepared Statements used for MySQL querying.
 7. Guarded included files using .htaccess
 
-#TO DO
+# TO DO
 
 1. Protecting Session Data using session_set_save_handler() and storing in a database/memcache or both.
 2. Use masonry for better gridding.

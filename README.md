@@ -41,7 +41,8 @@ https://gyazo.com/2f3d55ba579d76d3f13ea3f07e12935a
 1. Protecting Session Data using session_set_save_handler() and storing in a database/memcache or both.
 2. Use masonry or customise further for better gridding.
 3. Randomize fallback images to give a better experience to logged out users.
-4. 
+4. Use ob_start to buffer html to send it to the browser in larger chunks.
+5.
 
 
 
